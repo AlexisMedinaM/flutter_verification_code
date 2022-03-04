@@ -47,6 +47,9 @@ class VerificationCode extends StatefulWidget {
   ///accept only digit inputs from keyboard
   final bool digitsOnly;
 
+  //Initial parent focus from parent widget.
+  final FocusNode? initialFocus;
+
   VerificationCode({
     required this.onCompleted,
     required this.onEditing,
@@ -63,6 +66,7 @@ class VerificationCode extends StatefulWidget {
     this.clearAll,
     this.isSecure = false,
     this.digitsOnly = false,
+    this.initialFocus = null
   });
 
   @override
@@ -81,7 +85,11 @@ class _VerificationCodeState extends State<VerificationCode> {
     _listFocusNode.clear();
     _listFocusNodeKeyListener.clear();
     for (var i = 0; i < widget.length; i++) {
-      _listFocusNode.add(FocusNode());
+      if (i == 0 && widget.initialFocus != null) {
+        _listFocusNode.add(widget.initialFocus ?? FocusNode());
+      } else {
+        _listFocusNode.add(FocusNode());
+      }
       _listFocusNodeKeyListener.add(FocusNode());
       _listControllerText.add(TextEditingController());
       _code.add('');
